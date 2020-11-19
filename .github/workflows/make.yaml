@@ -3,6 +3,7 @@ on: [push, pull_request]
 
 jobs:
     make:
+        runs-on: ubuntu-18.04
         steps:
             - name: Checkout 🛎️
               uses: actions/checkout@v2
