@@ -11,6 +11,6 @@ jobs:
 
             - name: Elm Make
               uses: JorelAli/setup-elm@v2
-              run: elm make
               with:
-                    elm-version: 0.19.1
+                  elm-version: 0.19.1
+            - run: elm make
