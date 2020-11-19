@@ -1,0 +1,16 @@
+name: Make
+on: [push, pull_request]
+
+jobs:
+    make:
+        steps:
+            - name: Checkout 🛎️
+              uses: actions/checkout@v2
+              with:
+                  persist-credentials: false
+
+            - name: Elm Make
+              uses: JorelAli/setup-elm@v2
+              run: elm make
+              with:
+                    elm-version: 0.19.1
