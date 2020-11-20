@@ -3,3 +3,9 @@
 
 # Elm
 elm-stuff
+
+# Node
+node_modules
+
+# Built from Node
+./src/Tailwind.elm

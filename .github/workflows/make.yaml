@@ -10,8 +10,17 @@ jobs:
               with:
                   persist-credentials: false
 
-            - name: Elm Make
-              uses: JorelAli/setup-elm@v2
+            - uses: borales/actions-yarn@v2.0.0
               with:
-                  elm-version: 0.19.1
-            - run: elm make
+                  cmd: install
+            - uses: borales/actions-yarn@v2.0.0
+              with:
+                  cmd: build
+
+            - uses: borales/actions-yarn@v2.0.0
+              with:
+                  cmd: clean
+
+            - uses: borales/actions-yarn@v2.0.0
+              with:
+                  cmd: test

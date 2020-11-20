@@ -2,7 +2,7 @@ module Tailwind.Attributes exposing (..)
 
 import Html.Attributes
 import Json.Encode as Json
-import Tailwind.Html exposing (Attribute(..))
+import Tailwind exposing (Attribute(..))
 
 
 

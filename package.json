@@ -1,0 +1,23 @@
+{
+  "name": "elm-tailwind",
+  "version": "1.0.0",
+  "description": "An Elm implementation of the Tailwind framework",
+  "license": "MIT",
+  "repository": "git@github.com:NicolasGuilloux/elm-tailwind.git",
+  "author": "Nicolas <nicolas.guilloux@protonmail.com>",
+  "scripts": {
+    "build": "postcss ./assets/scss/main.scss &> /dev/null",
+    "clean": "elm-format src/Tailwind.elm src/Tailwind/Attributes.elm src/Tailwind/Html.elm --yes",
+    "test": "elm-test"
+  },
+  "dependencies": {
+    "elm": "^0.19",
+    "elm-format": "^0.8",
+    "elm-test": "^0.19.1-revision4",
+    "mocha": "^7.2",
+    "postcss": "^6.0",
+    "postcss-cli": "^7.1",
+    "postcss-elm-tailwind": "^0.10",
+    "tailwindcss": "^1"
+  }
+}

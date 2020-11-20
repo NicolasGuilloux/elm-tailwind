@@ -2,16 +2,12 @@ module Tailwind.Html exposing (..)
 
 import Html
 import Html.Attributes
-import Tailwind.Options
+import Tailwind exposing (Attribute(..))
+import Tailwind.Translations as Tailwind
 
 
 type alias Html msg =
     Html.Html msg
-
-
-type Attribute msg
-    = Native (Html.Attribute msg)
-    | Tailwind Tailwind.Options.Option
 
 
 convertAttributes : List (Attribute msg) -> List (Html.Attribute msg)
@@ -30,7 +26,7 @@ convertAttribute attributes nativeAttribute =
             attr
 
         Tailwind inputOption ->
-            Html.Attributes.class <| Tailwind.Options.toString inputOption
+            Html.Attributes.class <| Tailwind.toString inputOption
 
 
 
