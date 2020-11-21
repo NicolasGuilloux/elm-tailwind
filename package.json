@@ -7,13 +7,13 @@
   "author": "Nicolas <nicolas.guilloux@protonmail.com>",
   "scripts": {
     "build": "postcss ./assets/scss/main.scss &> /dev/null",
-    "clean": "elm-format src/Tailwind.elm src/Tailwind/Attributes.elm src/Tailwind/Html.elm --yes",
+    "format": "elm-format src/Tailwind.elm src/Tailwind/Attributes.elm src/Tailwind/Html.elm --yes",
     "test": "elm-test"
   },
   "dependencies": {
     "elm": "^0.19",
     "elm-format": "^0.8",
-    "elm-test": "^0.19.1-revision4",
+    "elm-test": "^0.19",
     "mocha": "^7.2",
     "postcss": "^6.0",
     "postcss-cli": "^7.1",

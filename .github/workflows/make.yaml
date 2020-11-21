@@ -3,24 +3,24 @@ on: [push, pull_request]
 
 jobs:
     make:
-        runs-on: ubuntu-18.04
+        runs-on: ubuntu-latest
+
         steps:
-            - name: Checkout 🛎️
-              uses: actions/checkout@v2
-              with:
-                  persist-credentials: false
+            - uses: actions/checkout@v2
 
-            - uses: borales/actions-yarn@v2.0.0
+            - name: Setup Elm environment
+              uses: JorelAli/setup-elm@v1
               with:
-                  cmd: install
-            - uses: borales/actions-yarn@v2.0.0
-              with:
-                  cmd: build
+                  elm-version: 0.19.1
 
-            - uses: borales/actions-yarn@v2.0.0
-              with:
-                  cmd: clean
+            - name: Install npm dependencies
+              run: npm install
 
-            - uses: borales/actions-yarn@v2.0.0
-              with:
-                  cmd: test
+            - name: Build the Tailwind files
+              run: npm run build
+
+            - name: Format the Elm files
+              run: npm run format
+
+            - name: Test the Elm files
+              run: npm run test
