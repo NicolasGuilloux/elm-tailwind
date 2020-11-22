@@ -1,4 +1,4 @@
-module Tailwind.Translations exposing (..)
+module Tailwind.Translations exposing (toString)
 
 import Tailwind exposing (Class(..))
 

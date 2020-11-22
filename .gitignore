@@ -9,3 +9,4 @@ node_modules
 
 # Built from Node
 ./src/Tailwind.elm
+./src/Tailwind/Translations.elm

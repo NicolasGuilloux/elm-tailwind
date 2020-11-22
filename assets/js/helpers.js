@@ -1,141 +1,9 @@
 // Based on: https://github.com/monty5811/postcss-elm-tailwind/blob/master/helpers.js
 
-function elmBodyHtml(elmModuleName, classes) {
-    return elmHeaderHtml(elmModuleName, classes) +
-        elmBody({ type: "Attribute msg", fn: "Tailwind " }, classes);
-}
-
-function elmBodyString(elmModuleName, classes) {
-    return elmHeaderString(elmModuleName, classes) +
-        elmBody({ type: "String", fn: "" }, classes);
-}
-
-function elmBodySvg(elmModuleName, classes) {
-    return elmHeaderSvg(elmModuleName, classes) +
-        elmBody({ type: "Svg.Attribute msg", fn: "A.class " }, classes);
-}
-
-
-function elmHeaderExports(elmFns, includeClassList) {
-    let tmp = Array.from(elmFns.values());
-    if (includeClassList) {
-        tmp.push("classList");
-    }
-    tmp.sort();
-    return tmp.join("\n    , ");
-}
-
-function elmHeaderHtml(elmModuleName, elmFns) {
-    l = elmHeaderExports(elmFns, true);
-
-    return `module ${elmModuleName} exposing (..)
-
-import Tailwind.Html exposing (Attribute(Tailwind))
-
-
-`;
-}
-
-function elmHeaderSvg(elmModuleName, elmFns) {
-    l = elmHeaderExports(elmFns, true);
-
-    return `module ${elmModuleName} exposing
-    ( ${l}
-    )
-
-import Svg
-import Svg.Attributes as A
-
-
-classList : List ( Svg.Attribute msg, Bool ) -> List (Svg.Attribute msg)
-classList classes =
-    List.map Tuple.first <| List.filter Tuple.second classes
-`;
-}
-
-function elmHeaderString(elmModuleName, elmFns) {
-    l = elmHeaderExports(elmFns, false);
-
-    return `module ${elmModuleName} exposing
-    ( ${l}
-    )
-`;
-}
-
-function elmBody(config, classes) {
-    let type = '';
-    let body = '';
-    let translation = '';
-
-    for (let [cls, elm] of classes) {
-        type = type + elmType(elm);
-        body = body + elmFunction(config, { cls, elm });
-        translation = translation + elmTranslation(cls, elm)
-    }
-
-    return `
-{-
-    List of all available Tailwind Classes as object
--}
-${type}
-
-
-{-
-    List of all functions that generate quickly the Tailwind type
--}
-${body}
-
-{-
-    List of all translation from the Class type to String (class name)
--}
-`;
-}
-
-function toElmType(functionName) {
-    return functionName.charAt(0).toUpperCase() + functionName.slice(1);
-}
-
-let firstElmType = true;
-function elmType(elm) {
-    const type = toElmType(elm);
-
-    if (firstElmType) {
-        firstElmType = false;
-
-        return `type Class
-    = ${type}`;
-    }
-
-    return `
-    | ${type}`;
-}
-
-function elmFunction(config, { cls, elm }) {
-    const type = toElmType(elm);
-
-    return `
-
-${elm} : ${config.type}
-${elm} =
-    ${config.fn}${type}
-`;
-}
-
-let firstElmTranslation = true;
 function elmTranslation(cls, functionName) {
     const type = toElmType(functionName);
-    let prefix = '';
 
-    if (firstElmTranslation) {
-        firstElmTranslation = false;
-
-        prefix = `toString : Class -> String
-toString class =
-    case class of`;
-    }
-
-    return prefix + `
-        ${type} -> "${cls}"`;
+    return "${type} -> \"${cls}\"\n";
 }
 
 // parse, clean up stuff
@@ -207,20 +75,10 @@ function toElmName(cls, opts) {
 const defaultOpts = {
     elmFile: "src/Tailwind.elm",
     elmModuleName: "Tailwind",
+    elmTranslationFile: "src/Tailwind/Translations.elm",
+    elmTranslationModuleName: "Tailwind.Translations",
     prefix: "",
     nameStyle: "camel",
-    formats: {
-        /*
-          string: {
-            elmFile: "src/Tailwind/String.elm",
-            elmModuleName: "Tailwind.String"
-          },
-          svg: {
-            elmFile: "src/Tailwind/Svg.elm",
-            elmModuleName: "Tailwind.Svg",
-          }
-        */
-    }
 };
 
 function cleanOpts(opts) {
@@ -232,25 +90,36 @@ function cleanOpts(opts) {
 
 function formats(opts) {
     return [
-        cleanFormat(opts, elmBodyHtml),
-        cleanFormat({ ...opts.formats.string }, elmBodyString),
-        cleanFormat({ ...opts.formats.svg }, elmBodySvg)
+        cleanFormat(opts, require('./formatters/elm-html').format),
+        cleanTranslationFormat(opts, require('./formatters/elm-html-translations').format),
     ].filter(f => f);
 }
 
-function cleanFormat({ elmFile, elmModuleName }, elmBodyFn) {
-    if (!elmFile) return false;
-    if (!elmModuleName) return false;
+function cleanFormat(options, elmBodyFn) {
+    if (!options.elmFile) return false;
+    if (!options.elmModuleName) return false;
 
-    return { elmFile, elmModuleName, elmBodyFn };
+    return { 
+        file: options.elmFile, 
+        moduleName: options.elmModuleName, 
+        contentCallback: elmBodyFn 
+    };
+}
+
+function cleanTranslationFormat(options, elmBodyFn) {
+    if (!options.elmTranslationFile) return false;
+    if (!options.elmTranslationModuleName) return false;
+
+    return { 
+        file: options.elmTranslationFile, 
+        baseModuleName: options.elmModuleName,
+        moduleName: options.elmTranslationModuleName, 
+        contentCallback: elmBodyFn 
+    };
 }
 
 exports.cleanOpts = cleanOpts;
 exports.defaultOpts = defaultOpts;
-exports.elmBodyHtml = elmBodyHtml;
-exports.elmBodyString = elmBodyString;
-exports.elmBodySvg = elmBodySvg;
-exports.elmFunction = elmFunction;
 exports.fixClass = fixClass;
 exports.formats = formats;
 exports.toElmName = toElmName;

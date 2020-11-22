@@ -6,7 +6,7 @@
   "repository": "git@github.com:NicolasGuilloux/elm-tailwind.git",
   "author": "Nicolas <nicolas.guilloux@protonmail.com>",
   "scripts": {
-    "build": "postcss ./assets/scss/main.scss &> /dev/null",
+    "build": "postcss ./assets/scss/main.scss -o /tmp/elm-tailwind.css",
     "format": "elm-format src/Tailwind.elm src/Tailwind/Attributes.elm src/Tailwind/Html.elm --yes",
     "test": "elm-test"
   },
