@@ -1,11 +1,10 @@
 module MainTest exposing (..)
 
-import Expect exposing (Expectation)
-import Test.Html.Query as Query
-import Test exposing (..)
-import Tailwind.Html exposing (..)
-import Tailwind.Attributes exposing (..)
 import Tailwind exposing (..)
+import Tailwind.Attributes exposing (..)
+import Tailwind.Html exposing (..)
+import Test exposing (..)
+import Test.Html.Query as Query
 import Test.Html.Selector as Test
 
 
@@ -17,5 +16,4 @@ createExpectedAttributes =
                 div [ class "test-class", container ] [ text "Test" ]
                     |> Query.fromHtml
                     |> Query.has [ Test.class "test-class", Test.class "container", Test.text "Test" ]
-
         ]

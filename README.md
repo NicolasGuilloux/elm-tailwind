@@ -17,19 +17,45 @@ Quick showcase
 2. [Getting started](#2-getting-started)
 3. [Versioning](#3-versioning)
 4. [Contributing](#4-contributing)
-5. [Hacking](#5-hacking)
-6. [License](#6-license)
+5. [License](#5-license)
+6. [Mentions](#6-mentions)
 
 
 # 1. Installation
 
-```bash
-composer require NicolasGuilloux/elm-tailwind
-```
+No procedure yet, it is still under development.
 
 # 2 Getting started
 
-- [Configuration](Docs/Configuration.md)
+You need to replace all import of `Html` and `Html.Attributes` by `Tailwind.Html` and `Tailwind.Attributes` in order to support the Tailwind types without the hassle of converting the methods. 
+
+Moreover, the `Attribute msg` type available in the `Html` library is replaced by the `Attribute msg` available in the `Taiwind` library.
+
+Here is an example of a basic usage:
+
+```elm
+import Tailwind as TW exposing (Attribute(..))
+import Tailwind.Html exposing (..)
+import Tailwind.Attributes exposing (..)
+
+aTemplate : List (Attribute msg) -> List (Html msg) -> Html msg
+aTemplate attributes =
+    Html.a
+        (attributes
+            |> (::) TW.my6
+            |> (::) TW.textBold
+        )
+
+anyHtml : Html msg
+anyHtml =
+    div []
+        [ aTemplate [ TW.my4, href "https://github.com" ] [ text "This is a link" ]
+        ] 
+```
+
+In the example above, the `aTemplate` function is a default implementation with Tailwind style. The second uses this template but overrides the `my6` to use `my4`.
+
+In most of the library, the output class would be `my6 text-bold my4` but this library tries to fix conflicts by giving to the latest configuration the highest priority. Therefore, the output class should be `my4 text-bold`.
 
 # 3. Versioning
 
@@ -52,27 +78,13 @@ Contributions are welcomed! There are many ways to contribute, and we appreciate
 As a reminder, all contributors are expected to follow our [Code of Conduct](CODE_OF_CONDUCT.md).
 
 
-# 5. Hacking
-
-You might use Docker and `docker-compose` to hack the project. Check out the following commands.
-
-```bash
-# Start the project
-docker-compose up -d
-
-# Install dependencies
-docker-compose exec application composer install
-
-# Run tests
-docker-compose exec application bin/phpunit
-
-# Run a bash within the container
-docker-compose exec application bash
-```
-
-
-# 6. License
+# 5. License
 
 template-bundle is distributed under the terms of the MIT license.
 
 See [LICENSE](LICENSE) for details.
+
+
+# 6. Mentions
+
+Special thanks to [monty5811](https://github.com/monty5811) for his work on the [postcss-elm-tailwind](https://github.com/monty5811/postcss-elm-tailwind). It was the base of my work and it speeded the development up a lot!

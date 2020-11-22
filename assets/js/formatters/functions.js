@@ -1,4 +1,5 @@
 const fs = require('fs');
+const classesFormatter = require('./classes');
 const fileTemplate = fs.readFileSync('assets/elm/FunctionsTemplate.elm', 'utf8');
 const functionTemplate = fs.readFileSync('assets/elm/Partials/Function.elm', 'utf8');
 
@@ -36,13 +37,14 @@ function formatBody(classes) {
 // Format the original class and the Elm function
 function formatTypeToClass(className, elmFunction) {
     let template = functionTemplate.slice();
+    let type = classesFormatter.formatType(elmFunction);
 
     return template
         .replace('#elmFunction#', elmFunction)
         .replace('#elmFunction#', elmFunction)
         .replace('#ArgumentsTypes#', 'Attribute msg')
         .replace('#Arguments#', '')
-        .replace('#Content#', 'Tailwind \"' + className + '\"');
+        .replace('#Content#', 'Tailwind ' + type);
 }
 
 exports.format = format;

@@ -7,7 +7,7 @@
   "author": "Nicolas <nicolas.guilloux@protonmail.com>",
   "scripts": {
     "build": "postcss ./assets/scss/main.scss -o /tmp/elm-tailwind.css",
-    "format": "elm-format src/ --yes",
+    "format": "elm-format src/ tests/ --yes",
     "test": "elm-test"
   },
   "dependencies": {
