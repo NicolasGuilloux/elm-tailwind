@@ -73,12 +73,20 @@ function toElmName(cls, opts) {
 // options stuff
 
 const defaultOpts = {
-    elmFile: "src/Tailwind.elm",
-    elmModuleName: "Tailwind",
-    elmTranslationFile: "src/Tailwind/Translations.elm",
-    elmTranslationModuleName: "Tailwind.Translations",
     prefix: "",
     nameStyle: "camel",
+    classes: {
+        file: "src/Tailwind/Classes.elm",
+        moduleName: "Tailwind.Classes",
+    },
+    translations: {
+        file: "src/Tailwind/Translations.elm",
+        moduleName: "Tailwind.Translations",
+    },
+    functions: {
+        file: "src/Tailwind.elm",
+        moduleName: "Tailwind",
+    }
 };
 
 function cleanOpts(opts) {
@@ -90,19 +98,23 @@ function cleanOpts(opts) {
 
 function formats(opts) {
     return [
-        cleanFormat(opts, require('./formatters/elm-html').format),
-        cleanTranslationFormat(opts, require('./formatters/elm-html-translations').format),
+        cleanFormat(opts.classes, opts, require('./formatters/classes').format),
+        cleanFormat(opts.translations, opts, require('./formatters/translations').format),
+        cleanFormat(opts.functions, opts, require('./formatters/functions').format),
     ].filter(f => f);
 }
 
-function cleanFormat(options, elmBodyFn) {
-    if (!options.elmFile) return false;
-    if (!options.elmModuleName) return false;
+function cleanFormat(options, globalOptions, elmBodyFn) {
+    if (!options.file) return false;
+    if (!options.moduleName) return false;
 
-    return { 
-        file: options.elmFile, 
-        moduleName: options.elmModuleName, 
-        contentCallback: elmBodyFn 
+    return {
+        file: options.file,
+        moduleName: options.moduleName,
+        classesModuleName: globalOptions.classes.moduleName,
+        translationsModuleName: globalOptions.translations.moduleName,
+        functionsModuleName: globalOptions.functions.moduleName,
+        contentCallback: elmBodyFn
     };
 }
 
@@ -110,11 +122,11 @@ function cleanTranslationFormat(options, elmBodyFn) {
     if (!options.elmTranslationFile) return false;
     if (!options.elmTranslationModuleName) return false;
 
-    return { 
-        file: options.elmTranslationFile, 
+    return {
+        file: options.elmTranslationFile,
         baseModuleName: options.elmModuleName,
-        moduleName: options.elmTranslationModuleName, 
-        contentCallback: elmBodyFn 
+        moduleName: options.elmTranslationModuleName,
+        contentCallback: elmBodyFn
     };
 }
 

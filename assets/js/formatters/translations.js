@@ -1,18 +1,17 @@
-
 const fs = require('fs');
-const elmHtml = require('./elm-html');
+const classesFormatter = require('./classes');
+const fileTemplate = fs.readFileSync('assets/elm/TranslationsTemplate.elm', 'utf8');
 
 // Generate the Elm HTML file
 function format(options, classes) {
-    let data = fs.readFileSync('assets/elm/HtmlTranslationTemplate.elm', 'utf8');
+    let template = fileTemplate.slice();
     let translations = formatTranslations(classes);
 
-    return data
+    return template
         .replace('#ElmModuleName#', options.moduleName)
-        .replace('#HtmlElmModuleName#', options.baseModuleName)
+        .replace('#ClassesModuleName#', options.classesModuleName)
         .replace('#ClassTranslations#', translations);
 }
-
 
 // Format the body to a list of Tailwind functions
 function formatTranslations(classes) {
@@ -27,13 +26,12 @@ function formatTranslations(classes) {
 
 // Format the original class and the Elm function
 function formatTranslation(className, elmFunction) {
-    let type = elmHtml.formatType(elmFunction);
+    let type = classesFormatter.formatType(elmFunction);
 
     return `${type} ->
             "${className}"
 
         `;
 }
-
 
 exports.format = format;

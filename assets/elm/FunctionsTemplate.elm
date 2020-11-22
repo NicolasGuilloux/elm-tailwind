@@ -6,6 +6,7 @@ module #ElmModuleName# exposing
 
 
 import Html
+import #ClassesModuleName# exposing (Class(..))
 
 
 {-
@@ -16,13 +17,6 @@ import Html
 type Attribute msg
     = Native (Html.Attribute msg)
     | Tailwind Class
-
-
-{-
-    List of all available Tailwind classes represented as a type
--}
-type Class
-    = #TailwindClasses#
 
 
 {-

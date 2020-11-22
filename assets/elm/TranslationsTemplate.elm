@@ -1,6 +1,6 @@
 module #ElmModuleName# exposing (toString)
 
-import #HtmlElmModuleName# exposing (Class(..))
+import #ClassesModuleName# exposing (Class(..))
 
 {-
     List of all translation from the Class type to String (class name)

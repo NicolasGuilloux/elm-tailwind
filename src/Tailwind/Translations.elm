@@ -1,6 +1,6 @@
 module Tailwind.Translations exposing (toString)
 
-import Tailwind exposing (Class(..))
+import Tailwind.Classes exposing (Class(..))
 
 
 

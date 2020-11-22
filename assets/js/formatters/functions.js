@@ -1,17 +1,17 @@
-
 const fs = require('fs');
+const fileTemplate = fs.readFileSync('assets/elm/FunctionsTemplate.elm', 'utf8');
+const functionTemplate = fs.readFileSync('assets/elm/Partials/Function.elm', 'utf8');
 
 // Generate the Elm HTML file
 function format(options, classes) {
-    let data = fs.readFileSync('assets/elm/HtmlTemplate.elm', 'utf8');
+    let template = fileTemplate.slice();
     let exposedFunctions = formatExposedFunctions(classes);
-    let tailwindClasses = formatTailwindClasses(classes);
     let body = formatBody(classes);
 
-    return data
+    return template
         .replace('#ElmModuleName#', options.moduleName)
+        .replace('#ClassesModuleName#', options.classesModuleName)
         .replace('#ExposedFunctions#', exposedFunctions)
-        .replace('#TailwindClasses#', tailwindClasses)
         .replace('#Body#', body);
 }
 
@@ -22,17 +22,8 @@ function formatExposedFunctions(classes) {
     return elmFunctions.join("\n    , ");
 }
 
-// Format the Tailwind types from the functions names
-function formatTailwindClasses(classes) {
-    let elmFunctions = Array.from(classes.values());
-    elmFunctions.map(formatType);
-
-    return elmFunctions.join("\n    | ");
-}
-
 // Format the body to a list of Tailwind functions
-function formatBody(classes)
-{
+function formatBody(classes) {
     let body = '';
 
     for (let [className, elmFunction] of classes) {
@@ -42,21 +33,16 @@ function formatBody(classes)
     return body;
 }
 
-// Format a Elm function name to its Elm type name
-function formatType(elmFunction) {
-    return elmFunction.charAt(0).toUpperCase() + elmFunction.slice(1);
-}
-
 // Format the original class and the Elm function
 function formatTypeToClass(className, elmFunction) {
-    return `
+    let template = functionTemplate.slice();
 
-${elmFunction} : Attribute msg
-${elmFunction} =
-    Tailwind "${className}"
-`;
+    return template
+        .replace('#elmFunction#', elmFunction)
+        .replace('#elmFunction#', elmFunction)
+        .replace('#ArgumentsTypes#', 'Attribute msg')
+        .replace('#Arguments#', '')
+        .replace('#Content#', 'Tailwind \"' + className + '\"');
 }
 
-
 exports.format = format;
-exports.formatType = formatType;
