@@ -8,6 +8,6 @@ elm-stuff
 node_modules
 
 # Built from Node
-./src/Tailwind.elm
-./src/Tailwind/Translations.elm
-./src/Tailwind/Classes.elm
+src/Tailwind.elm
+src/Tailwind/Translations.elm
+src/Tailwind/Classes.elm
