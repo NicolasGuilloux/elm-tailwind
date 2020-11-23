@@ -1,6 +1,5 @@
 module #ElmModuleName# exposing
-    ( Attribute
-    , Class
+    ( Attribute(..)
     , #ExposedFunctions#
     )
 

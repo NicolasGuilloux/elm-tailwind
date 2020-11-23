@@ -1,31 +1,13 @@
 Elm Tailwind
 =======================================
 
+[![Github Action](https://github.com/NicolasGuilloux/elm-tailwind/workflows/Make/badge.svg)](https://github.com/NicolasGuilloux/elm-tailwind/actions?query=workflow%3AMake)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/NicolasGuilloux/elm-tailwind/issues)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 Provides a fully typed Tailwind implementation with smart class cleaning.
 
-
-# Quick start
-
-Quick showcase
-
-# Table of content
-
-1. [Installation](#1-installation)
-2. [Getting started](#2-getting-started)
-3. [Versioning](#3-versioning)
-4. [Contributing](#4-contributing)
-5. [License](#5-license)
-6. [Mentions](#6-mentions)
-
-
-# 1. Installation
-
-No procedure yet, it is still under development.
-
-# 2 Getting started
+# Quick Showcase
 
 You need to replace all import of `Html` and `Html.Attributes` by `Tailwind.Html` and `Tailwind.Attributes` in order to support the Tailwind types without the hassle of converting the methods. 
 
@@ -56,6 +38,68 @@ anyHtml =
 In the example above, the `aTemplate` function is a default implementation with Tailwind style. The second uses this template but overrides the `my6` to use `my4`.
 
 In most of the library, the output class would be `my6 text-bold my4` but this library tries to fix conflicts by giving to the latest configuration the highest priority. Therefore, the output class should be `my4 text-bold`.
+
+
+# Table of content
+
+1. [Installation](#1-installation)
+2. [Getting started](#2-getting-started)
+3. [Versioning](#3-versioning)
+4. [Contributing](#4-contributing)
+5. [License](#5-license)
+6. [Mentions](#6-mentions)
+
+
+# 1. Installation
+
+No procedure yet, it is still under development.
+
+# 2 Getting started
+
+All the Tailwind classes, an Elm type representation of the Tailwind classes, are available in the module `Tailwind.Classes` under the type `Class`.
+
+Each `Class` can be translated to its Tailwind HTML class using the `toString` method from the `Tailwind.Translations` module.
+
+To keep it simple to use, you can replease the usage of the `Html` module with the `Tailwind.Html` module. It implements the same functions as the original module but wraps the attributes to support the Tailwind type more easily. Therefore, you can use it as follow:
+
+```elm
+import Html.Attributes as Attr
+import Tailwind.Classes exposing (Class(..))
+import Tailwind.Attributes exposing (Attribute(..))
+import Tailwind.Html as Html exposing (Html)
+
+anyHtml : Html msg
+anyHtml =
+    Html.div [ Tailwind Container ]
+        [ Html.a 
+            [ Native <| Attr.href "https://github.com" 
+            , Tailwind TextBold
+            ] 
+            [ Html.text "This is a test" 
+            ]
+        ]       
+```
+
+This is a bit to long to write, as it forces to prefix all native HTML attributes with `Native` and the `Class` values with `Tailwind`. To gain efficiency, simply use directly the `Tailwind` module that provides a function for each `Class` values prefixed with `Tailwind`, and the `Tailwind.Attributes` that prefix every native functions with `Native`.
+
+So the previous code becomes the following:
+
+```elm
+import Tailwind as TW
+import Tailwind.Attributes as Attr
+import Tailwind.Html as Html exposing (Html)
+
+anyHtml : Html msg
+anyHtml =
+    Html.div [ TW.container ]
+        [ Html.a 
+            [ Attr.href "https://github.com" 
+            , TextBold
+            ] 
+            [ Html.text "This is a test" 
+            ]
+        ]       
+```
 
 # 3. Versioning
 
