@@ -1,11 +1,4 @@
 // Based on: https://github.com/monty5811/postcss-elm-tailwind/blob/master/helpers.js
-
-function elmTranslation(cls, functionName) {
-    const type = toElmType(functionName);
-
-    return "${type} -> \"${cls}\"\n";
-}
-
 // parse, clean up stuff
 
 function fixClass(cls) {
@@ -75,14 +68,6 @@ function toElmName(cls, opts) {
 const defaultOpts = {
     prefix: "",
     nameStyle: "camel",
-    classes: {
-        file: "src/Tailwind/Classes.elm",
-        moduleName: "Tailwind.Classes",
-    },
-    translations: {
-        file: "src/Tailwind/Translations.elm",
-        moduleName: "Tailwind.Translations",
-    },
     functions: {
         file: "src/Tailwind.elm",
         moduleName: "Tailwind",
@@ -98,35 +83,18 @@ function cleanOpts(opts) {
 
 function formats(opts) {
     return [
-        cleanFormat(opts.classes, opts, require('./formatters/classes').format),
-        cleanFormat(opts.translations, opts, require('./formatters/translations').format),
-        cleanFormat(opts.functions, opts, require('./formatters/functions').format),
+        cleanFormat(opts.functions, require('./formatters/functions').format),
     ].filter(f => f);
 }
 
-function cleanFormat(options, globalOptions, elmBodyFn) {
+function cleanFormat(options, elmBodyFn) {
     if (!options.file) return false;
     if (!options.moduleName) return false;
 
     return {
         file: options.file,
         moduleName: options.moduleName,
-        classesModuleName: globalOptions.classes.moduleName,
-        translationsModuleName: globalOptions.translations.moduleName,
-        functionsModuleName: globalOptions.functions.moduleName,
-        contentCallback: elmBodyFn
-    };
-}
-
-function cleanTranslationFormat(options, elmBodyFn) {
-    if (!options.elmTranslationFile) return false;
-    if (!options.elmTranslationModuleName) return false;
-
-    return {
-        file: options.elmTranslationFile,
-        baseModuleName: options.elmModuleName,
-        moduleName: options.elmTranslationModuleName,
-        contentCallback: elmBodyFn
+        contentCallback: elmBodyFn,
     };
 }
 

@@ -5,8 +5,6 @@ module #ElmModuleName# exposing
 
 
 import Html
-import #ClassesModuleName# exposing (Class(..))
-
 
 {-
     Propose 2 differents attributes:
@@ -15,7 +13,7 @@ import #ClassesModuleName# exposing (Class(..))
 -}
 type Attribute msg
     = Native (Html.Attribute msg)
-    | Tailwind Class
+    | Tailwind String
 
 
 {-

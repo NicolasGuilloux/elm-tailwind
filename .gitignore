@@ -1,5 +1,6 @@
-# IntelliJ
+# IDE
 .idea
+.vscode
 
 # Elm
 elm-stuff
