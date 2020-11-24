@@ -101,6 +101,8 @@ anyHtml =
         ]       
 ```
 
+To learn more about what are inside these file, please check the [file content documentation](./Docs/FILE_CONTENT.md).
+
 # 3. Versioning
 
 template-bundle follows [semantic versioning](https://semver.org/). In short the scheme is MAJOR.MINOR.PATCH where
